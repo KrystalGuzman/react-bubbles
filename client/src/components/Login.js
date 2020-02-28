@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import {axiosWithAuth} from "../utils/axiosWithAuth";
 import { Pack } from '@potion/layout';
 import { Svg, Circle } from "@potion/element";
 
@@ -24,18 +24,17 @@ class Login extends React.Component{
 
   login = e => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/api/login", this.state.credentials)
+    axiosWithAuth()
+      .post("/login", this.state.credentials)
       .then(res => {
         console.log("login response", res);
         localStorage.setItem("token", res.data.payload);
-        this.props.history.push("/protected");
+        this.props.history.push("/bubbles");
       })
       .catch(err =>
         console.log(
           "login error",
-          err.message
-        )
+          err)
       );
   };
 render(){
@@ -60,9 +59,9 @@ render(){
             value={this.state.credentials.password}
             onChange={this.handleChange}
           />
-          <button style={{width: "460px"}}>Log in</button>
+          <button style={{width: "464px"}}>Log in</button>
         </form>
-        <h3> Add some color to your bubbles!</h3>
+        <h3> Add some color to the bubbles!</h3>
         <Svg width={400} height={400}>
       <Pack
         data={{
